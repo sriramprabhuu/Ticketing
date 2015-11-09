@@ -9,24 +9,6 @@
 <title>Ticketing</title>
 </head>
 <script type="text/javascript">
-	function loadRefValues() {
-		var xmlHttpRequest = getXMLHttpRequest();
-		//xmlHttpRequest.onreadystatechange = getReadyStateHandler(xmlHttpRequest);
-		xmlHttpRequest.open("POST", "/ReferenceValues", true);
-		xmlHttpRequest.setRequestHandler("Content-Type",
-				"application/x-www-form-urlencoded");
-		xmlHttpRequest.send(null);
-	}
-
-	function getReadyStateHandler(xmlHttpRequest) {
-		return function() {
-			if (xmlHttpRequest.readyState == 4) {
-				if (xmlHttpRequest.status == 200) {
-				}
-			}
-		}
-	}
-
 	function showOrHide() {
 		if (document.getElementById("showOfHide").value == '1') {
 			document.getElementById("userDetails").style.display = 'block';
@@ -44,31 +26,38 @@
 		document.forms[0].action = "holdSeats.do";
 		document.forms[0].submit();
 	}
+	
+	function ConfirmTickets() {
+		window.location.href='goToConfirm.do';
+	}
 </script>
 <link rel="stylesheet" href="Style.css" type="text/css" media="screen">
 <body onload="javascript:showOrHide()">
 	<form:form action="findSeats.do" commandName="registerVO">
 		<table align="center">
 			<tr>
-				<td colspan="2"><img alt="Booking" src="imgTick.png" /></td>
+				<td colspan="3"><img alt="Booking" src="imgTick.png" /></td>
 			</tr>
 			<tr>
 				<td><b>Levels :</b></td>
-				<td><form:select path="selectedLevelId">
+				<td colspan="2"><form:select path="selectedLevelId">
 						<form:option value="0" label="--- Select Level---" />
 						<form:options items="${sessionScope.levelMasterList}" />
 					</form:select></td>
 			</tr>
 			<tr>
-				<td colspan="2" align="left"><b><form:errors
-							path="selectedLevelId" cssClass="errors" /> <c:if
-							test="${message!=null}">${message}</c:if></b></td>
+				<td colspan="3" align="left"><b><form:errors
+							path="errorMessage" cssClass="errors" /> <BR> <form:errors
+							path="selectedLevelId" cssClass="errors" /> <font color="red"><c:if
+								test="${message!=null}">${message}</c:if></font></b></td>
 			</tr>
 			<tr>
 				<td><input value="Find Availability" type="submit"
 					name="submit"></td>
 				<td><input value="Proceed to Booking" type="button"
 					name="submit" onclick="javascript:show();"></td>
+				<td><input value="Confirm Tickets" type="button"
+					name="submit" onclick="javascript:ConfirmTickets();"></td>
 			</tr>
 		</table>
 	</form:form>
@@ -81,10 +70,10 @@
 					<td><form:input type="text" path="email" /></td>
 				</tr>
 
-				<tr>
+				<!-- <tr>
 					<td><b>Mobile</b></td>
 					<td><form:input type="text" path="mobileNo" /></td>
-				</tr>
+				</tr> -->
 				<tr>
 					<td><b>Number of Seats</b></td>
 					<td><form:input type="text" path="noOfSeats" /></td>
@@ -105,11 +94,13 @@
 				</tr>
 
 				<tr>
-					<td colspan="2" align="left"><b><form:errors path="email"
-								cssClass="errors" /> <BR> <form:errors path="mobileNo"
-								cssClass="errors" /> <BR> <form:errors path="noOfSeats"
-								cssClass="errors" /> <BR> <form:errors path="minLevel"
-								cssClass="errors" /> </b></td>
+					<td colspan="2" align="left"><b><form:errors
+								path="errorMessage" cssClass="errors" /> <BR> <form:errors
+								path="email" cssClass="errors" /> <BR> <!-- <form:errors
+								path="mobileNo" cssClass="errors" /> <BR> --> <form:errors
+								path="noOfSeats" cssClass="errors" /> <BR> <form:errors
+								path="minLevel" cssClass="errors" /> <font color="red"><c:if
+									test="${errorMessage!=null}">${errorMessage}</c:if></font></b></td>
 				</tr>
 				<tr>
 					<td colspan="2"><input value="Hold Seats" type="submit"

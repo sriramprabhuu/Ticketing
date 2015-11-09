@@ -2,6 +2,8 @@ package com.reserve.service;
 
 import java.util.Optional;
 
+import com.reserve.exception.TicketingException;
+import com.reserve.vo.Reservation;
 import com.reserve.vo.SeatHold;
 
 public interface TicketService {
@@ -12,8 +14,9 @@ public interface TicketService {
 	 * @param venueLevel
 	 *            a numeric venue level identifier to limit the search
 	 * @return the number of tickets available on the provided level
+	 * @throws TicketingException 
 	 */
-	public int numSeatsAvailable(Optional<Integer> venueLevel);
+	public int numSeatsAvailable(Optional<Integer> venueLevel) throws TicketingException;
 
 	/**
 	 * Find and hold the best available seats for a customer
@@ -28,9 +31,10 @@ public interface TicketService {
 	 *            unique identifier for the customer
 	 * @return a SeatHold object identifying the specific seats and related
 	 *         information
+	 * @throws TicketingException 
 	 */
 	public SeatHold findAndHoldSeats(int numSeats, Optional<Integer> minLevel,
-			Optional<Integer> maxLevel, String customerEmail);
+			Optional<Integer> maxLevel, String customerEmail) throws TicketingException;
 
 	/**
 	 * Commit seats held for a specific customer
@@ -41,7 +45,9 @@ public interface TicketService {
 	 *            the email address of the customer to which the seat hold is
 	 *            assigned
 	 * @return a reservation confirmation code
+	 * @throws TicketingException
 	 */
-	public String reserveSeats(int seatHoldId, String customerEmail);
+	public Reservation reserveSeats(int seatHoldId, String customerEmail)
+			throws TicketingException;
 
 }

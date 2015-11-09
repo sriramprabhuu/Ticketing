@@ -11,6 +11,16 @@ public class RegisterVO {
 	private int confirmId;
 	private int flagShow;
 
+	private String errorMessage;
+
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
+	}
+
 	public int getFlagShow() {
 		return flagShow;
 	}

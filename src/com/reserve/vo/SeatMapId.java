@@ -13,14 +13,17 @@ public class SeatMapId implements java.io.Serializable {
 	public SeatMapId() {
 	}
 
-	public SeatMapId( int level, int showid, int rowid, int seatid) {
+	public SeatMapId(int level, int showid, int rowid, int seatid) {
 		this.level = level;
 		this.showid = showid;
 		this.rowid = rowid;
 		this.seatid = seatid;
 	}
 
-
+	@Override
+	public String toString() {
+		return "L" + level + " R" + rowid + " S" + seatid;
+	}
 
 	public int getLevel() {
 		return this.level;
@@ -63,10 +66,8 @@ public class SeatMapId implements java.io.Serializable {
 			return false;
 		SeatMapId castOther = (SeatMapId) other;
 
-		return (this.getLevel() == castOther.getLevel())
-				&& (this.getShowid() == castOther.getShowid())
-				&& (this.getRowid() == castOther.getRowid())
-				&& (this.getSeatid() == castOther.getSeatid());
+		return (this.getLevel() == castOther.getLevel()) && (this.getShowid() == castOther.getShowid())
+				&& (this.getRowid() == castOther.getRowid()) && (this.getSeatid() == castOther.getSeatid());
 	}
 
 	public int hashCode() {

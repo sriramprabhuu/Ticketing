@@ -1,12 +1,14 @@
 package com.reserve.presentation;
 
+import org.apache.log4j.Logger;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import com.reserve.vo.RegisterVO;
-import com.reserve.vo.SeatMapId;
 
 public class LevelValidator implements Validator {
+
+	final static Logger logger = Logger.getLogger(LevelValidator.class);
 
 	@Override
 	public boolean supports(Class<?> seatMapId) {
@@ -22,33 +24,37 @@ public class LevelValidator implements Validator {
 		}
 	}
 
-	@Override
 	public void validateBeforeHolding(Object arg0, Errors errors) {
 		RegisterVO mapId = (RegisterVO) arg0;
-		if (mapId.getEmail() == null || mapId.getEmail().equals("")
-				|| !isValidEmailAddress(mapId.getEmail())) {
-			errors.rejectValue("email", "email.invalid",
-					"Invalid email, please give a valid email.");
+		if (mapId.getEmail() == null || mapId.getEmail().equals("") || !isValidEmailAddress(mapId.getEmail())) {
+			errors.rejectValue("email", "email.invalid", "Invalid email, please give a valid email.");
 		}
-		if (mapId.getMobileNo() != null
-				&& !mapId.getMobileNo().trim().equals("")
-				&& !mapId.getMobileNo().trim()
-						.matches("(001|0|\\+1)[7-9][0-9]{9}")) {
-			errors.rejectValue("mobileNo", "mobileNo.invalid",
-					"Invalid Mobile number, please enter a valid entry.");
+		if (mapId.getMobileNo() != null && !mapId.getMobileNo().trim().equals("")
+				&& !mapId.getMobileNo().trim().matches("(001|0|\\+1)[7-9][0-9]{9}")) {
+			errors.rejectValue("mobileNo", "mobileNo.invalid", "Invalid Mobile number, please enter a valid entry.");
 		}
+
 		if (mapId.getNoOfSeats() < 1) {
-			errors.rejectValue("noOfSeats", "noOfSeats.invalid",
-					"Enter a valid number of seats.");
+			errors.rejectValue("noOfSeats", "noOfSeats.invalid", "Enter a valid number of seats.");
 		}
 		if (mapId.getMaxLevel() < 1 && mapId.getMinLevel() < 1) {
-			errors.rejectValue("minLevel", "minLevel.invalid",
-					"Level not selected, Please select appropriate level.");
+			errors.rejectValue("minLevel", "minLevel.invalid", "Level not selected, Please select appropriate level.");
 		}
 
 	}
 
+	public void validateBeforeConfirm(Object arg0, Errors errors) {
+		RegisterVO mapId = (RegisterVO) arg0;
+		if (mapId.getEmail() == null || mapId.getEmail().equals("") || !isValidEmailAddress(mapId.getEmail())) {
+			errors.rejectValue("email", "email.invalid", "Invalid email, please give a valid email.");
+		}
+		if (mapId.getHoldId() < 1) {
+			errors.rejectValue("holdId", "holdId.invalid", "Enter a valid Hold Id.");
+		}
+	}
+
 	public boolean isValidEmailAddress(String email) {
+		logger.debug("Invalid email -" + email);
 		String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
 		java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
 		java.util.regex.Matcher m = p.matcher(email);

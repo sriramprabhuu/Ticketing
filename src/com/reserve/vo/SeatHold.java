@@ -25,13 +25,22 @@ public class SeatHold implements java.io.Serializable {
 		this.createdDate = createdDate;
 	}
 
-	public SeatHold(User user, int noOfseats, Date createdDate, Set seatmaps,
-			Set reservations) {
+	public SeatHold(User user, int noOfseats, Date createdDate, Set seatmaps, Set reservations) {
 		this.user = user;
 		this.noOfseats = noOfseats;
 		this.createdDate = createdDate;
 		this.seatmaps = seatmaps;
 		this.reservations = reservations;
+	}
+
+	@Override
+	public String toString() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("Seats are - ");
+		for (Object object : seatmaps) {
+			buffer.append(object.toString()).append(", ");
+		}
+		return buffer.toString();
 	}
 
 	public Integer getHoldId() {

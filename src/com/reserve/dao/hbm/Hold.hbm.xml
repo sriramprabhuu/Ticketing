@@ -17,7 +17,7 @@
         <property name="createdDate" type="date">
             <column name="createdDate" length="0" not-null="true" />
         </property>
-        <set name="seatmaps" table="seatmap" inverse="true" lazy="true" fetch="select">
+        <set name="seatmaps" table="seatmap" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="holdId" not-null="true" />
             </key>

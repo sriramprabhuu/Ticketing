@@ -25,7 +25,7 @@
 		<property name="cache.provider_class">
 			org.hibernate.cache.NoCacheProvider
 		</property>
-
+		<!-- <property name="hbm2ddl.auto">update</property> -->
 		<!-- Display all generated SQL to stdout -->
 		<property name="show_sql">true</property>
 		<mapping resource="com/reserve/dao/hbm/User.hbm.xml"></mapping>

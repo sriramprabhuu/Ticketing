@@ -28,6 +28,12 @@ public class User implements java.io.Serializable {
 		this.reservations = reservations;
 	}
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return userId + " " + email;
+	}
+
 	public Integer getUserId() {
 		return this.userId;
 	}

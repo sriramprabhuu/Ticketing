@@ -8,38 +8,35 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Ticketing - Confirm</title>
 </head>
-<script type="text/javascript">
-	function confirmSeats() {
-		document.forms[0].action = "confirmSeats.do";
-		document.forms[0].submit();
-	}
-</script>
 <link rel="stylesheet" href="Style.css" type="text/css" media="screen">
 <body>
-	<form:form action="findSeats.do" commandName="registerVO">
+	<form:form action="confirmSeats.do" commandName="registerVO">
 		<table align="center">
 			<tr>
 				<td colspan="2"><img alt="Booking" src="imgTick.png" /></td>
 			</tr>
 			<tr>
 				<td><b>Email</b></td>
-				<td><c:out value="${registerVO.email}" /></td>
+				<td><form:input type="text" path="email" /></td>
 			</tr>
-			<tr>
+			<%-- <tr>
 				<td><b>Mobile</b></td>
 				<td><c:out value="${registerVO.mobileNo}" /></td>
-			</tr>
-			<tr>
-				<td><b>Selected Seats</b></td>
-				<td><c:out value="${registerVO.noOfSeats}" /></td>
-			</tr>
+			</tr> --%>
 			<tr>
 				<td><b>Hold Id</b></td>
 				<td><form:input type="text" path="holdId" /></td>
 			</tr>
 			<tr>
-				<td colspan="2"><input value="Confirm Seats" type="button"
-					name="submit" onclick="javascript:confirmSeats();"></td>
+				<td colspan="2" align="left"><b><font color="red"><c:if
+								test="${message!=null}">${message}</c:if></font> <form:errors
+							path="errorMessage" cssClass="errors" /> <BR> <form:errors
+							path="email" cssClass="errors" /> <BR> <form:errors
+							path="holdId" cssClass="errors" /> </b></td>
+			</tr>
+			<tr>
+				<td colspan="2"><input value="Confirm Seats" type="submit"
+					name="Submit"></td>
 			</tr>
 		</table>
 	</form:form>

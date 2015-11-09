@@ -21,6 +21,11 @@ public class SeatMap implements java.io.Serializable {
 		this.hold = hold;
 		this.createdDate = createdDate;
 	}
+	
+	@Override
+	public String toString() {
+		return id.toString();
+	}
 
 	public SeatMapId getId() {
 		return this.id;
