@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 5, 2015 10:19:54 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.reserve.vo.LevelMaster" table="level_master" catalog="ticketing">
+        <id name="levelId" type="java.lang.Integer">
+            <column name="levelId" />
+            <generator class="identity" />
+        </id>
+        <property name="levelName" type="string">
+            <column name="levelName" length="20" not-null="true" />
+        </property>
+        <property name="price" type="int">
+            <column name="price" not-null="true" />
+        </property>
+        <property name="noOfRows" type="int">
+            <column name="noOfRows" not-null="true" />
+        </property>
+        <property name="noOfseats" type="int">
+            <column name="noOfseats" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

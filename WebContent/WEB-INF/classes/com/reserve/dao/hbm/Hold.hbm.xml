@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 5, 2015 10:19:54 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.reserve.vo.SeatHold" table="hold" catalog="ticketing">
+        <id name="holdId" type="java.lang.Integer">
+            <column name="holdId" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="user" class="com.reserve.vo.User" fetch="select">
+            <column name="userId" not-null="true" />
+        </many-to-one>
+        <property name="noOfseats" type="int">
+            <column name="noOfseats" not-null="true" />
+        </property>
+        <property name="createdDate" type="date">
+            <column name="createdDate" length="0" not-null="true" />
+        </property>
+        <set name="seatmaps" table="seatmap" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="holdId" not-null="true" />
+            </key>
+            <one-to-many class="com.reserve.vo.SeatMap" />
+        </set>
+        <set name="reservations" table="reservation" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="holdId" not-null="true" />
+            </key>
+            <one-to-many class="com.reserve.vo.Reservation" />
+        </set>
+    </class>
+</hibernate-mapping>

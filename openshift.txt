@@ -1,0 +1,52 @@
+       Root User: adminHzuybS2
+   Root Password: SG6ekHDrT79J
+   Database Name: jbossews
+
+Connection URL: mysql://$OPENSHIFT_MYSQL_DB_HOST:$OPENSHIFT_MYSQL_DB_PORT/
+
+jbossews @ http://jbossews-rajen.rhcloud.com/ (uuid: 563ef32d89f5cf1bf60000d9)
+------------------------------------------------------------------------------
+  Domain:     rajen
+  Created:    2:01 AM
+  Gears:      1 (defaults to small)
+  Git URL:    ssh://563ef32d89f5cf1bf60000d9@jbossews-rajen.rhcloud.com/~/git/jbossews.git/
+  SSH:        563ef32d89f5cf1bf60000d9@jbossews-rajen.rhcloud.com
+  Deployment: auto (on git push)
+  Aliases:    sriram.ticketing.com
+
+  jbossews-2.0 (Tomcat 7 (JBoss EWS 2.0))
+  ---------------------------------------
+    Gears: Located with mysql-5.5
+
+  mysql-5.5 (MySQL 5.5)
+  ---------------------
+    Gears:          Located with jbossews-2.0
+    Connection URL: mysql://$OPENSHIFT_MYSQL_DB_HOST:$OPENSHIFT_MYSQL_DB_PORT/
+    Database Name:  jbossews
+    Password:       SG6ekHDrT79J
+    Username:       adminHzuybS2
+https://www.openshift.com/developers/install-the-client-tools
+
+Your private SSH key file should be set as readable only to yourself.  Please run 'chmod 600 C:\Users\Sriram\.ssh\id_rsa'
+
+  jbossews http://jbossews-rajen.rhcloud.com/
+
+  You are using 1 of 3 total gears
+  The following gear sizes are available to you: small
+
+Your client tools are now configured.
+
+Service Local               OpenShift
+------- -------------- ---- ------------------
+java    127.0.0.1:8081  =>  127.7.106.129:8080
+mysql   127.0.0.1:3307  =>  127.7.106.130:3306
+-----------------------------------------------------------------------
+
+C:\Users\Sriram>ssh 563ef32d89f5cf1bf60000d9@jbossews-rajen.rhcloud.com
+mysql
+
+rhc app-show
+rhc tail
+rhc tail -a jbossews
+rhc app-restart
+rhc app-start -a jbossews

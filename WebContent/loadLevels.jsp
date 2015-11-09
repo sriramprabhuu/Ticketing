@@ -1,0 +1,122 @@
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"    "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Ticketing</title>
+</head>
+<script type="text/javascript">
+	function loadRefValues() {
+		var xmlHttpRequest = getXMLHttpRequest();
+		//xmlHttpRequest.onreadystatechange = getReadyStateHandler(xmlHttpRequest);
+		xmlHttpRequest.open("POST", "/ReferenceValues", true);
+		xmlHttpRequest.setRequestHandler("Content-Type",
+				"application/x-www-form-urlencoded");
+		xmlHttpRequest.send(null);
+	}
+
+	function getReadyStateHandler(xmlHttpRequest) {
+		return function() {
+			if (xmlHttpRequest.readyState == 4) {
+				if (xmlHttpRequest.status == 200) {
+				}
+			}
+		}
+	}
+
+	function showOrHide() {
+		if (document.getElementById("showOfHide").value == '1') {
+			document.getElementById("userDetails").style.display = 'block';
+		}
+		if (document.getElementById("showOfHide").value == '0') {
+			document.getElementById("userDetails").style.display = 'none';
+		}
+	}
+	function show() {
+		document.getElementById("showOfHide").value = '1';
+		document.getElementById("userDetails").style.display = 'block';
+	}
+
+	function holdSeats() {
+		document.forms[0].action = "holdSeats.do";
+		document.forms[0].submit();
+	}
+</script>
+<link rel="stylesheet" href="Style.css" type="text/css" media="screen">
+<body onload="javascript:showOrHide()">
+	<form:form action="findSeats.do" commandName="registerVO">
+		<table align="center">
+			<tr>
+				<td colspan="2"><img alt="Booking" src="imgTick.png" /></td>
+			</tr>
+			<tr>
+				<td><b>Levels :</b></td>
+				<td><form:select path="selectedLevelId">
+						<form:option value="0" label="--- Select Level---" />
+						<form:options items="${sessionScope.levelMasterList}" />
+					</form:select></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="left"><b><form:errors
+							path="selectedLevelId" cssClass="errors" /> <c:if
+							test="${message!=null}">${message}</c:if></b></td>
+			</tr>
+			<tr>
+				<td><input value="Find Availability" type="submit"
+					name="submit"></td>
+				<td><input value="Proceed to Booking" type="button"
+					name="submit" onclick="javascript:show();"></td>
+			</tr>
+		</table>
+	</form:form>
+	<div id="userDetails" style="display: block">
+		<form:form action="holdSeats.do" commandName="registerVO">
+			<form:hidden path="flagShow" id="showOfHide" />
+			<table align="center">
+				<tr>
+					<td><b>Email</b></td>
+					<td><form:input type="text" path="email" /></td>
+				</tr>
+
+				<tr>
+					<td><b>Mobile</b></td>
+					<td><form:input type="text" path="mobileNo" /></td>
+				</tr>
+				<tr>
+					<td><b>Number of Seats</b></td>
+					<td><form:input type="text" path="noOfSeats" /></td>
+				</tr>
+				<tr>
+					<td><b>Maximum Level</b></td>
+					<td><form:select path="maxLevel">
+							<form:option value="0" label="--- Select Level---" />
+							<form:options items="${sessionScope.levelMasterList}" />
+						</form:select></td>
+				</tr>
+				<tr>
+					<td><b>Minimum Level</b></td>
+					<td><form:select path="minLevel">
+							<form:option value="0" label="--- Select Level---" />
+							<form:options items="${sessionScope.levelMasterList}" />
+						</form:select></td>
+				</tr>
+
+				<tr>
+					<td colspan="2" align="left"><b><form:errors path="email"
+								cssClass="errors" /> <BR> <form:errors path="mobileNo"
+								cssClass="errors" /> <BR> <form:errors path="noOfSeats"
+								cssClass="errors" /> <BR> <form:errors path="minLevel"
+								cssClass="errors" /> </b></td>
+				</tr>
+				<tr>
+					<td colspan="2"><input value="Hold Seats" type="submit"
+						name="submit"></td>
+				</tr>
+			</table>
+		</form:form>
+	</div>
+</body>
+</html>
