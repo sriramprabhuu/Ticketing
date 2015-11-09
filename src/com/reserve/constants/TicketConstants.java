@@ -2,6 +2,7 @@ package com.reserve.constants;
 
 public class TicketConstants {
 
+	
 	public static final int HOLD_MINUTES = 5;
 	
 	public static final int NEXT_SEAT = 1;
