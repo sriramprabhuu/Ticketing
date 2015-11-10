@@ -34,11 +34,9 @@ Testing:
 	within the specified hold time (5 minutes). If any seats are available in this category, user id (and hold id)
 	in the SeatMap entities will be shifted to the new user.
 *	In the screen, the list of seats Confirmed / held will be show. For example: if user selected 3 seats, the program displays as below:
-		---------------------------------------------------------------
-		|Confirmation Code - XX                                       |
-		|Seats - Orchestra R1 S2, Orchestra R1, S3, Orchestra R1, S4. |
-		---------------------------------------------------------------
-	* - here "R" - refers to Row id, "S" - refers to Seat Id.
+		Confirmation Code - XX
+		Seats - Orchestra R1 S2, Orchestra R1, S3, Orchestra R1, S4.
+		*** - here "R" - refers to Row id, "S" - refers to Seat Id.
 7) *	Some scenarios found below can be tested:
 		- ending seat numbers in a row, so that next seat gets booked in very next row.
 		- ending row in a level, so that program books a seat in first row in next selected level.
@@ -54,5 +52,4 @@ Note:
 
 
 Thank you
-
 Sriram
