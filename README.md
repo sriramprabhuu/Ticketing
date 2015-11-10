@@ -39,7 +39,7 @@ Testing:
 *	Some scenarios found below can be tested:
 		- ending seat numbers in a row, so that next seat gets booked in very next row.
 		- ending row in a level, so that program books a seat in first row in next selected level.
-*       Junit test cases have been added, but due to time constraints, did not add extensively. So junit code test coverage is minimum.
+*       Junit test cases have been added, but due to time constraints, did not add extensively. So junit code test coverage is minimum (spring-test-2.5 has been used). Junits can be found at test\com\reserve\service.
 
 Note:
 -----------------------
