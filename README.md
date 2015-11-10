@@ -1,10 +1,9 @@
-This is a showcase to get the Ticketing application working with functionality mentioned in the requirements document, 
-	built using Spring 4, Hibernate 4, MySQL.
+Ticketing application working with functionality mentioned in the requirements document, built using Spring 4, Hibernate 4, MySQL.
 
 Executing the program:
 -----------------------
 *	To build the war, execute ant build with file build.xml.
-*	Create schema ("ticketing") in MYSQL, with the DB scripts found in db/DB_Mysql_DDL_and_masterData.sql.
+*	Create database schema ("ticketing") in MYSQL, with the DB scripts found in db/DB_Mysql_DDL_and_masterData.sql.
 *	To deploy, copy the war to the "webapps" in Tomcat or "standalone/deployments" directory of Jboss.
 
 **Note: The program has been deployed in Open Shift (with Tomcat and MySQL stack), and is available at 
@@ -40,6 +39,7 @@ Testing:
 *	Some scenarios found below can be tested:
 		- ending seat numbers in a row, so that next seat gets booked in very next row.
 		- ending row in a level, so that program books a seat in first row in next selected level.
+*       Junit test cases have been added, but due to time constraints, did not add extensively. So junit code test coverage is minimum.
 
 Note:
 -----------------------
