@@ -36,10 +36,9 @@ Testing:
 	within the specified hold time (5 minutes). If any seats are available in this category, user id (and hold id)
 	in the SeatMap entities will be shifted to the new user.
 6) In the screen, the list of seats Confirmed / held will be show. For example: if user selected 3 seats, the program displays as below:
-	---------------------------------------------------------------
+
 	|Confirmation Code - XX                                       |
 	|Seats - Orchestra R1 S2, Orchestra R1, S3, Orchestra R1, S4. |
-	---------------------------------------------------------------
 	* - here "R" - refers to Row id, "S" - refers to Seat Id.
 7) Some scenarios found below can be tested:
 	- ending seat numbers in a row, so that next seat gets booked in very next row.
@@ -53,6 +52,3 @@ Note:
 	I did in Spring MVC).
 2) Was curious about Open Shift, so opened an account for free, set up RubyGems for Git, SFTP, SSH, did deployment there for the first time.
 3) Every bit of code found here are created from scratch and not copied from any place.
-
-Thank you
-Sriram
