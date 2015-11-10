@@ -37,7 +37,7 @@ Testing:
 		Confirmation Code - XX
 		Seats - Orchestra R1 S2, Orchestra R1, S3, Orchestra R1, S4.
 		*** - here "R" - refers to Row id, "S" - refers to Seat Id.
-7) *	Some scenarios found below can be tested:
+*	Some scenarios found below can be tested:
 		- ending seat numbers in a row, so that next seat gets booked in very next row.
 		- ending row in a level, so that program books a seat in first row in next selected level.
 
@@ -51,5 +51,4 @@ Note:
 *	Every bit of code found here are created from scratch and not copied from any place.
 
 
-Thank you
-Sriram
+Thanks, Sriram
