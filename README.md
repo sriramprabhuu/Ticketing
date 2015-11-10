@@ -5,14 +5,15 @@ Executing the program:
 *	To build the war, execute ant build with file build.xml.
 *	Create database schema ("ticketing") in MYSQL, with the DB scripts found in db/DB_Mysql_DDL_and_masterData.sql.
 *	To deploy, copy the war to the "webapps" in Tomcat or "standalone/deployments" directory of Jboss.
+*	Logging done using log4j (src\log4j.properties).
 
 **Note: The program has been deployed in Open Shift (with Tomcat and MySQL stack), and is available at 
 	http://jbossews-rajen.rhcloud.com/Ticketing/
 
 Architecture:
 -----------------------
-*	Spring MVC -> Service -> DB (MYSQL).
-*	LDM can be found at design/ER_Diagram_Ticketing.pdf
+*	Spring MVC -> Service -> Hibernate -> DB (MYSQL).
+*	Logical Domain Model can be found at design/ER_Diagram_Ticketing.pdf
 
 Assumptions:
 -----------------------
