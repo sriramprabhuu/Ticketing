@@ -34,10 +34,10 @@ Testing:
 *	While doing "hold" operation, the program always checks for previously held seats that were not confirmed
 	within the specified hold time (5 minutes). If any seats are available in this category, user id (and hold id)
 	in the SeatMap entities will be shifted to the new user.
-*	In the screen, the list of seats Confirmed / held will be show. For example: if user selected 3 seats, the program displays as below:
-		Confirmation Code - XX
-		Seats - Orchestra R1 S2, Orchestra R1, S3, Orchestra R1, S4.
-		*** - here "R" - refers to Row id, "S" - refers to Seat Id.
+*	In the screen, the list of seats Confirmed / held will be show. For example: if user selected 3 seats, the program           displays as below:
+*	Confirmation Code - XX
+	Seats - Orchestra R1 S2, Orchestra R1, S3, Orchestra R1, S4.
+	*** - here "R" - refers to Row id, "S" - refers to Seat Id.
 *	Some scenarios found below can be tested:
 		- ending seat numbers in a row, so that next seat gets booked in very next row.
 		- ending row in a level, so that program books a seat in first row in next selected level.
@@ -46,9 +46,8 @@ Testing:
 Note:
 -----------------------
 *	Initially, thought of buildling this using AngularJS with Rest. I thought of taking this as an opportunity to do 
-	HandsOn AngularJS for the first time, But due to time constraints, I developed using Spring MVC, Hindernate.
-	(Again Spring MVC - I am doing for first time here. I have extensive experience in JSF or Struts, thought of doing something new, so 
-	I did in Spring MVC).
+	HandsOn AngularJS for the first time, But due to time constraints, developed using Spring MVC, Hibernate.
+	(Again Spring MVC - doing for first time here. I have extensive experience in JSF or Struts, thought of doing     something new, so picked Spring MVC).
 *	Was curious about Open Shift, so opened an account for free, set up RubyGems for Git, SFTP, SSH, did deployment there for the first time.
 *	Every bit of code found here are created from scratch and not copied from any place.
 
