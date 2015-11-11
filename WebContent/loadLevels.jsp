@@ -26,16 +26,25 @@
 		document.forms[0].action = "holdSeats.do";
 		document.forms[0].submit();
 	}
-	
+
 	function ConfirmTickets() {
-		window.location.href='goToConfirm.do';
+		window.location.href = 'goToConfirm.do';
 	}
 </script>
 <link rel="stylesheet" href="Style.css" type="text/css" media="screen">
 <body onload="javascript:showOrHide()">
 	<form:form action="findSeats.do" commandName="registerVO">
+
 		<table align="center">
-			<tr>
+
+			<tr align="center">
+				<td colspan="3"><font color="purple" size="6"><b>Ticket
+							Booking</b></font></td>
+			</tr>
+
+		</table>
+		<table align="center">
+			<tr align="center">
 				<td colspan="3"><img alt="Booking" src="imgTick.png" /></td>
 			</tr>
 			<tr>
@@ -56,8 +65,8 @@
 					name="submit"></td>
 				<td><input value="Proceed to Booking" type="button"
 					name="submit" onclick="javascript:show();"></td>
-				<td><input value="Confirm Tickets" type="button"
-					name="submit" onclick="javascript:ConfirmTickets();"></td>
+				<td><input value="Confirm Tickets" type="button" name="submit"
+					onclick="javascript:ConfirmTickets();"></td>
 			</tr>
 		</table>
 	</form:form>
@@ -107,7 +116,24 @@
 						name="submit"></td>
 				</tr>
 			</table>
+
 		</form:form>
 	</div>
+
+	<table align="left" height="50px">
+
+		<tr align="left">
+			<td colspan="3"><I><B><font style="">Ticketing
+							application working with functionality mentioned in the
+							requirements document, built using Spring 4, Hibernate 4, MySQL.<BR>
+							<BR>Logical Domain Model can be found at : <a
+							href="ER_Diagram_Ticketing.pdf">ER_Ticketing.pdf</a> <BR> <BR>Every
+							bit of code found here are created from scratch and not copied
+							from any place. <BR> <BR>**Seat map will be printed
+							here (with level , row number & Seat number) for each ticket.<BR>
+							<BR>
+					</font> <font size="3"><b> - Sriram Rajendran</b></font></B> </I></td>
+		</tr>
+	</table>
 </body>
 </html>

@@ -12,6 +12,14 @@
 <body>
 	<form:form action="confirmSeats.do" commandName="registerVO">
 		<table align="center">
+
+			<tr align="center">
+				<td colspan="3"><font color="purple" size="6"><b>Ticket
+							Booking</b></font></td>
+			</tr>
+
+		</table>
+		<table align="center">
 			<tr>
 				<td colspan="2"><img alt="Booking" src="imgTick.png" /></td>
 			</tr>
@@ -37,6 +45,21 @@
 			<tr>
 				<td colspan="2"><input value="Confirm Seats" type="submit"
 					name="Submit"></td>
+			</tr>
+		</table>
+		<table align="left" height="50px">
+
+			<tr align="left">
+				<td colspan="3"><I><B><font style="">Ticketing
+								application working with functionality mentioned in the
+								requirements document, built using Spring 4, Hibernate 4, MySQL.<BR>
+								<BR>Logical Domain Model can be found at : <a
+								href="ER_Diagram_Ticketing.pdf">ER_Ticketing.pdf</a> <BR> <BR>Every
+								bit of code found here are created from scratch and not copied
+								from any place. <BR> <BR>**Seat map will be printed
+								here (with level , row number & Seat number) for each ticket.<BR>
+								<BR>
+						</font> <font size="3"><b> - Sriram Rajendran</b></font></B> </I></td>
 			</tr>
 		</table>
 	</form:form>
