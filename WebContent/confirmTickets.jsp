@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Ticketing - Confirm</title>
+<title>Sriram's Ticketing - Confirm</title>
 </head>
 <link rel="stylesheet" href="Style.css" type="text/css" media="screen">
 <body>

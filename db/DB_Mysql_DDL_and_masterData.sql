@@ -87,8 +87,8 @@ commit;
 
 INSERT INTO `ticketing`.`level_master` (`levelId`, `levelName`, `price`, `noOfRows`, `noOfseats`) VALUES (1, 'Orchestra', 100, 25, 50);
 INSERT INTO `ticketing`.`level_master` (`levelId`, `levelName`, `price`, `noOfRows`, `noOfseats`) VALUES (2, 'Main', 75, 20, 100);
-INSERT INTO `ticketing`.`level_master` (`levelId`, `levelName`, `price`, `noOfRows`, `noOfseats`) VALUES (3, 'Orchestra', 50, 15, 100);
-INSERT INTO `ticketing`.`level_master` (`levelId`, `levelName`, `price`, `noOfRows`, `noOfseats`) VALUES (4, 'Orchestra', 40, 15, 100);
+INSERT INTO `ticketing`.`level_master` (`levelId`, `levelName`, `price`, `noOfRows`, `noOfseats`) VALUES (3, 'Balcony1', 50, 15, 100);
+INSERT INTO `ticketing`.`level_master` (`levelId`, `levelName`, `price`, `noOfRows`, `noOfseats`) VALUES (4, 'Balcony2', 40, 15, 100);
 commit;
 
 INSERT INTO `ticketing`.`status` (`statusId`, `statusName`) VALUES (0, 'Held');
