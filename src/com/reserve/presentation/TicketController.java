@@ -113,7 +113,7 @@ public class TicketController {
 				}
 				logger.info("Tickets Held, Hold number - " + hold.getHoldId() + ", " + hold.toString());
 				model.addAttribute("message",
-						"Tickets Held<BR> Hold number / ID - " + hold.getHoldId() + ", " + hold.toString()
+						"Tickets Held<BR> Hold number / ID - " + hold.getHoldId() + "<BR> " + hold.toString()
 								+ "<BR> Tickets will be held until "
 								+ DateUtils.getValidUntilDate(hold.getCreatedDate()));
 				model.addAttribute("registerVO", id);

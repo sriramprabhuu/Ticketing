@@ -2,6 +2,7 @@ package com.reserve.vo;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -13,10 +14,14 @@ public class SeatHold implements java.io.Serializable {
 	private User user;
 	private int noOfseats;
 	private Date createdDate;
-	private Set seatmaps = new HashSet(0);
+	private List<SeatMap> seatmaps = null;
 	private Set reservations = new HashSet(0);
 
 	public SeatHold() {
+	}
+
+	public SeatHold(int holdId) {
+		this.holdId = holdId;
 	}
 
 	public SeatHold(User user, int noOfseats, Date createdDate) {
@@ -25,7 +30,8 @@ public class SeatHold implements java.io.Serializable {
 		this.createdDate = createdDate;
 	}
 
-	public SeatHold(User user, int noOfseats, Date createdDate, Set seatmaps, Set reservations) {
+	public SeatHold(User user, int noOfseats, Date createdDate, List seatmaps,
+			Set reservations) {
 		this.user = user;
 		this.noOfseats = noOfseats;
 		this.createdDate = createdDate;
@@ -75,11 +81,11 @@ public class SeatHold implements java.io.Serializable {
 		this.createdDate = createdDate;
 	}
 
-	public Set getSeatmaps() {
+	public List getSeatmaps() {
 		return this.seatmaps;
 	}
 
-	public void setSeatmaps(Set seatmaps) {
+	public void setSeatmaps(List seatmaps) {
 		this.seatmaps = seatmaps;
 	}
 

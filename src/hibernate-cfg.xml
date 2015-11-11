@@ -27,7 +27,7 @@
 		</property>
 		<!-- <property name="hbm2ddl.auto">update</property> -->
 		<!-- Display all generated SQL to stdout -->
-		<property name="show_sql">true</property>
+		<property name="show_sql">false</property>
 		<mapping resource="com/reserve/dao/hbm/User.hbm.xml"></mapping>
 		<mapping resource="com/reserve/dao/hbm/Status.hbm.xml"></mapping>
 		<mapping resource="com/reserve/dao/hbm/LevelMaster.hbm.xml"></mapping>

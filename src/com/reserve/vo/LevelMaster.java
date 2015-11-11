@@ -20,6 +20,10 @@ public class LevelMaster implements java.io.Serializable {
 		this.noOfRows = noOfRows;
 		this.noOfseats = noOfseats;
 	}
+	
+	public LevelMaster(int levelId) {
+		this.levelId = levelId;
+	}
 
 	public Integer getLevelId() {
 		return this.levelId;

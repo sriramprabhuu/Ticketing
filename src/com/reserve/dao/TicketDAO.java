@@ -3,7 +3,6 @@ package com.reserve.dao;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -34,6 +33,7 @@ public class TicketDAO {
 	public TicketDAO() {
 	}
 
+	@SuppressWarnings("rawtypes")
 	public LevelMaster getTotalNumberOfSeats(Optional<Integer> levelId) throws TicketingException {
 		logger.debug("getTotalNumberOfSeats - start");
 		Session session = sessionFactory.getCurrentSession();
@@ -56,6 +56,7 @@ public class TicketDAO {
 		return levelMaster;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<SeatMap> getFilledSeats(Optional<Integer> venueLevel) throws TicketingException {
 		logger.debug("getFilledSeats for a level");
 		Session session = sessionFactory.getCurrentSession();
@@ -74,17 +75,17 @@ public class TicketDAO {
 		return list;
 	}
 
+	@SuppressWarnings("unchecked")
 	public SeatHold getHeldSeats(SeatHold hold) throws TicketingException {
 		logger.debug("getHeldSeats");
 		Session session = sessionFactory.getCurrentSession();
-		List<SeatHold> list = null;
+		List<SeatMap> list = null;
 		try {
 			session.beginTransaction();
-			list = session.createQuery("from SeatHold where holdId = :holdIdNo")
+			list = session
+					.createQuery("from SeatMap where hold.holdId = :holdIdNo order by id.level, id.rowid, id.seatid")
 					.setInteger("holdIdNo", hold.getHoldId()).list();
-			if (list != null && list.size() > 0) {
-				hold = list.get(0);
-			}
+			hold.setSeatmaps(list);
 			session.getTransaction().commit();
 		} catch (HibernateException e) {
 			logger.fatal(e.getMessage());
@@ -95,11 +96,18 @@ public class TicketDAO {
 		return hold;
 	}
 
+	@SuppressWarnings("unchecked")
 	public SeatHold holdPreviouslyHeldExpiredSeats(int numSeats, Optional<Integer> minLevel, Optional<Integer> maxLevel,
 			User user) throws TicketingException {
 		logger.debug("holdExistingHeldOutdatedSeats - start");
+		SeatHold seatHold = shiftExpiredSeatsToNewHold(numSeats, minLevel, maxLevel, user, null);
+		logger.debug("holdExistingHeldOutdatedSeats - end");
+		return seatHold;
+	}
+
+	private SeatHold shiftExpiredSeatsToNewHold(int numSeats, Optional<Integer> minLevel, Optional<Integer> maxLevel,
+			User user, SeatHold seatHold) throws TicketingException {
 		Session session = sessionFactory.getCurrentSession();
-		SeatHold seatHold = null;
 		List<SeatMap> list = null;
 		int insertedSeats = 0;
 		try {
@@ -110,16 +118,20 @@ public class TicketDAO {
 					.setInteger("minLevel", minLevel.get()).setInteger("maxLevel", maxLevel.get())
 					.setParameter("date", DateUtils.getOutdatedDate()).setMaxResults(numSeats).list();
 			if (list != null && list.size() >= numSeats) {
-				seatHold = new SeatHold(user, numSeats, new Date());
-				session.save(seatHold);
+				if (seatHold == null) {
+					seatHold = new SeatHold(user, numSeats, new Date());
+					session.save(seatHold);
+				}
 				for (SeatMap seatMap : list) {
-					seatMap.setHold(seatHold); // set new hold id for existing
-												// seat records which were
-												// booking timedout
-					seatMap.setCreatedDate(new Date()); // update date to
-														// current
-					session.update(seatMap);
-					insertedSeats++;
+					if (seatMap != null) {
+						seatMap.setHold(seatHold);
+						// set new hold id for existing seat records which were
+						// booking timed out
+						seatMap.setCreatedDate(new Date());
+						// update date to current
+						session.update(seatMap);
+						insertedSeats++;
+					}
 				}
 				logger.debug(insertedSeats + " - seats changed to a different hold id as they were expired");
 			}
@@ -129,7 +141,6 @@ public class TicketDAO {
 			session.getTransaction().rollback();
 			throw new TicketingException(102, "Problem booking tickets due to techincal issues");
 		}
-		logger.debug("holdExistingHeldOutdatedSeats - end");
 		return seatHold;
 	}
 
@@ -151,6 +162,13 @@ public class TicketDAO {
 	public SeatHold holdAvailableSeats(int numSeats, Optional<Integer> minLevel, Optional<Integer> maxLevel, User user)
 			throws TicketingException {
 		logger.debug("holdAvailableSeats - Hold seats which were not held / left by someone before");
+		SeatHold seatHold = holdSeatsOnCondition(numSeats, minLevel, maxLevel, user, false);
+		logger.debug("holdAvailableSeats - finished");
+		return seatHold;
+	}
+
+	private SeatHold holdSeatsOnCondition(int numSeats, Optional<Integer> minLevel, Optional<Integer> maxLevel,
+			User user, boolean commitIfLessSeats) throws TicketingException {
 		Session session = sessionFactory.openSession();
 		SeatHold seatHold = null;
 		SeatMap seatMap = null;
@@ -230,7 +248,7 @@ public class TicketDAO {
 					}
 				}
 			}
-			seatHold = bookOrRevert(numSeats, session, seatHold, bookedTickets);
+			seatHold = bookOrRevert(numSeats, session, seatHold, bookedTickets, commitIfLessSeats);
 		} catch (HibernateException e) {
 			logger.fatal(e.getMessage());
 			session.getTransaction().rollback();
@@ -240,7 +258,6 @@ public class TicketDAO {
 			session.getTransaction().rollback();
 			throw new TicketingException(102, "Problem booking tickets due to techincal issues");
 		}
-		logger.debug("holdAvailableSeats - finished");
 		return seatHold;
 	}
 
@@ -251,8 +268,9 @@ public class TicketDAO {
 		session.save(seatMap);
 	}
 
-	private SeatHold bookOrRevert(int numSeats, Session session, SeatHold seatHold, int bookedTickets) {
-		if (bookedTickets == numSeats) {
+	private SeatHold bookOrRevert(int numSeats, Session session, SeatHold seatHold, int bookedTickets,
+			boolean commitIfLessSeats) {
+		if (bookedTickets == numSeats || commitIfLessSeats) {
 			logger.debug("All seats booked");
 			session.getTransaction().commit();
 		} else {
@@ -268,6 +286,7 @@ public class TicketDAO {
 		return seatHold;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<SeatHold> getHeldSeats(User user) throws TicketingException {
 		logger.debug("getHeldSeats - Started");
 		Session session = sessionFactory.openSession();
@@ -288,14 +307,13 @@ public class TicketDAO {
 		return list;
 	}
 
+	@SuppressWarnings("unchecked")
 	public Reservation confirmSeats(SeatHold seatHold, User user) throws TicketingException {
 		logger.debug("confirmSeats - Started");
 		Session session = sessionFactory.openSession();
-		SeatMap seatMap = null;
-		int tempRowId, levelCurrent, tempSeatId, bookedTickets = 0;
 		Reservation reservation = null;
 		List<SeatHold> list = null;
-		Set<SeatMap> map = null;
+		List<SeatMap> map = null;
 		Status statusName = null;
 		SeatHold hold = null;
 		int noOfSeats = 0, confirmedSeats = 0;
@@ -310,14 +328,15 @@ public class TicketDAO {
 				map = list.get(0).getSeatmaps();
 				for (SeatMap seat : map) {
 					// confirm only booked within allowed hold time
-					if (seat.getCreatedDate().after(DateUtils.getOutdatedDate())) {
+					if (seat != null && seat.getCreatedDate() != null
+							&& seat.getCreatedDate().after(DateUtils.getOutdatedDate())) {
 						seat.setStatus(statusName);
 						session.save(seat);
 						confirmedSeats++;
 					} else {
 						// Break the loop as held timeout happened for just one
 						// ticket
-						break;
+						// break;
 					}
 				}
 			}
@@ -342,5 +361,61 @@ public class TicketDAO {
 		}
 		logger.debug("confirmSeats - done");
 		return reservation;
+	}
+
+	public SeatHold holdRemainBeforeFullSeats(int numSeats, Optional<Integer> minLevel, Optional<Integer> maxLevel,
+			User user) throws TicketingException {
+		SeatHold hold = null;
+		int remainingToBeBooked = 0;
+		if (getAllAvailableValidSeats(minLevel, maxLevel) >= numSeats) {
+			// category 1 - SeatMaps - that are not touched / held - seatmap -
+			// category 2 - Held seats , which are expired
+			// category 3 - Both 1 and 2
+			// somehow in Cat 1 or 2, fill seats
+			hold = holdSeatsOnCondition(numSeats, minLevel, maxLevel, user, true);
+			remainingToBeBooked = numSeats - hold.getNoOfseats();
+			hold = shiftExpiredSeatsToNewHold(remainingToBeBooked, minLevel, maxLevel, user, hold);
+		}
+		return hold;
+	}
+
+	@SuppressWarnings("unchecked")
+	private int getAllAvailableValidSeats(Optional<Integer> minLevel, Optional<Integer> maxLevel)
+			throws TicketingException {
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		List<LevelMaster> list = null;
+		int totalSeats = 0;
+		int validOrBookedSeatsCount = 0;
+		List<SeatMap> validOrBookedSeats = null;
+		try {
+			list = session.createQuery("from LevelMaster where level between :maxLevel and :minLevel")
+					.setInteger("maxLevel", maxLevel.get()).setInteger("minLevel", minLevel.get()).list();
+			for (LevelMaster levelMaster : list) {
+				totalSeats += levelMaster.getNoOfRows() * levelMaster.getNoOfRows();
+			}
+
+			validOrBookedSeats = session
+					.createQuery(
+							"from SeatMap where status=1 and id.level between :maxLevel and :minLevel and createdDate > :date")
+					.setInteger("maxLevel", maxLevel.get()).setInteger("minLevel", minLevel.get())
+					.setParameter("date", DateUtils.getOutdatedDate()).list();
+			if (validOrBookedSeats != null) {
+				validOrBookedSeatsCount = validOrBookedSeats.size();
+
+			}
+			totalSeats = totalSeats - validOrBookedSeatsCount;
+			session.getTransaction().commit();
+		} catch (HibernateException e) {
+			logger.fatal(e.getMessage());
+			session.getTransaction().rollback();
+			throw new TicketingException(102, "Problem booking tickets due to techincal issues");
+		} catch (Exception e) {
+			logger.fatal(e.getMessage());
+			session.getTransaction().rollback();
+			throw new TicketingException(102, "Problem booking tickets due to techincal issues");
+		}
+		logger.debug("getAllAvailableValidSeats - finished");
+		return totalSeats;
 	}
 }

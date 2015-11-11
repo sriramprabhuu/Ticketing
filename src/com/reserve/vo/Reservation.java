@@ -18,14 +18,21 @@ public class Reservation implements java.io.Serializable {
 	@Override
 	public String toString() {
 		StringBuffer seatsAlloc = new StringBuffer();
-		return "Reservation Confirmation Number - " + reservationId + ", " + user.getEmail() + ", <BR>"
-				+ hold.toString();
+		return "Reservation Confirmation Number - " + reservationId + ", "
+				+ user.getEmail() + ", <BR>" + hold.toString();
 	}
 
 	public Reservation(User user, SeatHold hold, Date createdDate) {
 		this.user = user;
 		this.hold = hold;
 		this.createdDate = createdDate;
+	}
+
+	public Reservation(int user, int hold) {
+
+		this.user = new User(user);
+		this.hold = new SeatHold(hold);
+		this.createdDate = new Date();
 	}
 
 	public Integer getReservationId() {

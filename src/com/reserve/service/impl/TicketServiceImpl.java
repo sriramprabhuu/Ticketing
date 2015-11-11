@@ -73,11 +73,28 @@ public class TicketServiceImpl implements TicketService {
 			hold = ticketDAO.holdPreviouslyHeldExpiredSeats(numSeats, minLevel, maxLevel, user);
 			logger.debug("Previously held & timedout seats reheld for a new user");
 			if (hold == null || hold.getNoOfseats() == 0) {
+				// means notickets booked in previously held category
 				// hold new available seats
 				logger.debug("trying to hold seats with new seat map entries");
 				hold = ticketDAO.holdAvailableSeats(numSeats, minLevel, maxLevel, user);
 			}
-			hold = ticketDAO.getHeldSeats(hold);
+
+			if (hold == null || hold.getNoOfseats() == 0) {
+				// this is a rarest case, where marginal seats are left in new
+				// category or expired category
+				// means not enough tickets in previously held category
+				// seperately and new seperately
+				// if both of these 2 are combined, the seats count may match.
+				logger.debug("trying to hold seats with new and expired seat map entries");
+				hold = ticketDAO.holdRemainBeforeFullSeats(numSeats, minLevel, maxLevel, user);
+			}
+
+			if (hold == null || hold.getNoOfseats() == 0) {
+				// Tried the both cat 1 and 2 - no tickets available..
+				throw new TicketingException(103, "Not Enough Tickets available at this time");
+			}
+
+			hold = ticketDAO.getHeldSeats(hold);// for all map ids
 			if (logger.isInfoEnabled()) {
 				logger.info("Held seats, details - " + hold.toString() + ". Tickets will be held until "
 						+ DateUtils.getValidUntilDate(hold.getCreatedDate()));
