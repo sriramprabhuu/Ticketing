@@ -6,9 +6,9 @@ Executing the program:
 *	Create database schema ("ticketing") in MYSQL, with the DB scripts found in db/DB_Mysql_DDL_and_masterData.sql.
 *	To deploy, copy the war to the "webapps" in Tomcat or "standalone/deployments" directory of Jboss.
 *	Logging done using log4j (src\log4j.properties).
-
-**Note: The program has been deployed in Open Shift (with Tomcat and MySQL stack), and is available at 
+*       Note: The program has been deployed in Open Shift (with Tomcat and MySQL stack), and is available at 
 	http://jbossews-rajen.rhcloud.com/Ticketing/
+*       Since it is for free, the heap space is very low, often it goes out of memory (Small gear on the free account with           heap space 512MB). Please let me know incase the application is not available, will restart it for you.
 
 Architecture:
 -----------------------
@@ -25,6 +25,7 @@ Assumptions:
 Testing:
 -----------------------
 *	Application is available @ http://jbossews-rajen.rhcloud.com/Ticketing/ for testing.
+*	Testing document with screenshots can be found here - Ticketing_testing_screens.docx.
 *	For each seat being booked, a SeatMap entity is created in the DB, which has a unique
 	combination of "ShowId", "LevelId", "RowId" and "SeatId".
 *	During "hold" operation, the SeatMap entities will be alloted for a User.
