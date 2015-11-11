@@ -33,7 +33,8 @@ public class TicketServiceImpl implements TicketService {
 
 	@Override
 	public int numSeatsAvailable(Optional venueLevel) throws TicketingException {
-		logger.debug("getting number of seats available for level " + venueLevel);
+		logger.debug("getting number of seats available for level "
+				+ venueLevel);
 		int noOfSeats = 0;
 		LevelMaster total = null;
 		List<SeatMap> list = null;
@@ -47,20 +48,23 @@ public class TicketServiceImpl implements TicketService {
 				noOfSeats = noOfSeats - list.size();
 			}
 			if (logger.isInfoEnabled()) {
-				logger.info("Number of seats available in level " + venueLevel + " as of " + new Date() + " is - "
-						+ noOfSeats);
+				logger.info("Number of seats available in level " + venueLevel
+						+ " as of " + new Date() + " is - " + noOfSeats);
 			}
 		} catch (TicketingException exception) {
+			logger.fatal(exception.getErrorMessage());
 			throw exception;
 		} catch (Exception exception) {
+			logger.fatal(exception.getMessage());
 			throw new TicketingException(100, exception.getMessage());
 		}
 		return noOfSeats;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public SeatHold findAndHoldSeats(int numSeats, Optional minLevel, Optional maxLevel, String customerEmail)
-			throws TicketingException {
+	public SeatHold findAndHoldSeats(int numSeats, Optional minLevel,
+			Optional maxLevel, String customerEmail) throws TicketingException {
 		logger.debug("Hold seats Service");
 		User user = new User();
 		SeatHold hold = null;
@@ -70,13 +74,15 @@ public class TicketServiceImpl implements TicketService {
 			logger.debug("User saved / loaded");
 			// try existing held out dated (not confirmed seats) which may be
 			// available now
-			hold = ticketDAO.holdPreviouslyHeldExpiredSeats(numSeats, minLevel, maxLevel, user);
+			hold = ticketDAO.holdPreviouslyHeldExpiredSeats(numSeats, minLevel,
+					maxLevel, user);
 			logger.debug("Previously held & timedout seats reheld for a new user");
 			if (hold == null || hold.getNoOfseats() == 0) {
 				// means notickets booked in previously held category
 				// hold new available seats
 				logger.debug("trying to hold seats with new seat map entries");
-				hold = ticketDAO.holdAvailableSeats(numSeats, minLevel, maxLevel, user);
+				hold = ticketDAO.holdAvailableSeats(numSeats, minLevel,
+						maxLevel, user);
 			}
 
 			if (hold == null || hold.getNoOfseats() == 0) {
@@ -86,29 +92,36 @@ public class TicketServiceImpl implements TicketService {
 				// seperately and new seperately
 				// if both of these 2 are combined, the seats count may match.
 				logger.debug("trying to hold seats with new and expired seat map entries");
-				hold = ticketDAO.holdRemainBeforeFullSeats(numSeats, minLevel, maxLevel, user);
+				hold = ticketDAO.holdRemainBeforeFullSeats(numSeats, minLevel,
+						maxLevel, user);
 			}
 
 			if (hold == null || hold.getNoOfseats() == 0) {
 				// Tried the both cat 1 and 2 - no tickets available..
-				throw new TicketingException(103, "Not Enough Tickets available at this time");
+				throw new TicketingException(103,
+						"Not Enough Tickets available at this time");
 			}
 
 			hold = ticketDAO.getHeldSeats(hold);// for all map ids
 			if (logger.isInfoEnabled()) {
-				logger.info("Held seats, details - " + hold.toString() + ". Tickets will be held until "
+				logger.info("Held seats, details - " + hold.toString()
+						+ ". Tickets will be held until "
 						+ DateUtils.getValidUntilDate(hold.getCreatedDate()));
 			}
 		} catch (TicketingException exception) {
+			logger.fatal(exception.getErrorMessage());
 			throw exception;
 		} catch (Exception exception) {
+			logger.fatal(exception.getMessage());
 			throw new TicketingException(100, exception.getMessage());
 		}
 		return hold;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Reservation reserveSeats(int seatHoldId, String customerEmail) throws TicketingException {
+	public Reservation reserveSeats(int seatHoldId, String customerEmail)
+			throws TicketingException {
 		logger.debug("Confirm seats Service");
 		User user = new User();
 		Reservation reservation = null;
@@ -117,23 +130,27 @@ public class TicketServiceImpl implements TicketService {
 		try {
 			user.setEmail(customerEmail);
 			logger.debug("Validate email and hold id combination");
-			user = userDAO.getUserOrCreate(user);
+			user = userDAO.validateUser(user);
 			list = ticketDAO.getHeldSeats(user);
 			if (list == null || list.size() == 0) {
 				logger.info("Validate email and hold id combination - failed");
-				throw new TicketingException(100, "Seat hold id not pertaining to the Email entered.");
+				throw new TicketingException(100,
+						"Seat hold id not pertaining to the Email entered.");
 			}
 			logger.debug("Validatation successful");
 			hold.setHoldId(seatHoldId);
 			hold.setUser(user);
 			hold = ticketDAO.getHeldSeats(hold);
 			reservation = ticketDAO.confirmSeats(hold, user);
-			if (logger.isInfoEnabled()) {
-				logger.info("Reserved seats, details - " + reservation.toString());
+			if (reservation != null && logger.isInfoEnabled()) {
+				logger.info("Reserved seats, details - "
+						+ reservation.toString());
 			}
 		} catch (TicketingException exception) {
+			logger.fatal(exception.getErrorMessage());
 			throw exception;
 		} catch (Exception exception) {
+			logger.fatal(exception.getMessage());
 			throw new TicketingException(100, exception.getMessage());
 		}
 		return reservation;

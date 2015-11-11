@@ -44,7 +44,9 @@ public class SeatHold implements java.io.Serializable {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("Seats are - ");
 		for (Object object : seatmaps) {
-			buffer.append(object.toString()).append(", ");
+			if (object != null) {
+				buffer.append(object.toString()).append(", ");
+			}
 		}
 		return buffer.toString();
 	}
