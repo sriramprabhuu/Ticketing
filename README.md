@@ -25,7 +25,7 @@ Assumptions:
 Testing:
 -----------------------
 *	Application is available @ http://jbossews-rajen.rhcloud.com/Ticketing/ for testing.
-*	Testing document with screenshots can be found here - Ticketing_testing_screens.docx.
+*	Testing document with screenshots can be found here - test/Ticketing_testing_screens.docx.
 *	For each seat being booked, a SeatMap entity is created in the DB, which has a unique
 	combination of "ShowId", "LevelId", "RowId" and "SeatId".
 *	During "hold" operation, the SeatMap entities will be alloted for a User.
