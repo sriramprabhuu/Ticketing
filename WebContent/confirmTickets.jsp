@@ -8,6 +8,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Sriram's Ticketing - Confirm</title>
 </head>
+<script type="text/javascript">
+	function loadHome() {
+		window.location.href = 'loadHome.do';
+	}
+</script>
 <link rel="stylesheet" href="Style.css" type="text/css" media="screen">
 <body>
 	<form:form action="confirmSeats.do" commandName="registerVO">
@@ -43,8 +48,9 @@
 							path="holdId" cssClass="errors" /> </b></td>
 			</tr>
 			<tr>
-				<td colspan="2"><input value="Confirm Seats" type="submit"
-					name="Submit"></td>
+				<td><input value="Confirm Seats" type="submit" name="Submit"></td>
+				<td><input value="Home" type="button" name="Home1"
+					onclick="javascript:loadHome();"></td>
 			</tr>
 		</table>
 		<table align="left" height="50px">
